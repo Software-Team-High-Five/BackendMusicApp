@@ -1,0 +1,24 @@
+{
+    "name": "musicperformance",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "node server.js",
+        "bundle": "mkdir deploy && cp -r app server.js package.json package-lock.json course-backend.service deploy && rm deploy/app/config/db.config.js && mv deploy/app/config/prod.db.config.js deploy/app/config/db.config.js"
+    },
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "cookie-parser": "~1.4.4",
+        "cors": "^2.8.5",
+        "debug": "~2.6.9",
+        "express": "^4.18.2",
+        "http-errors": "~1.6.3",
+        "mariadb": "^2.4.2",
+        "morgan": "~1.9.1",
+        "mysql": "^2.18.1",
+        "mysql2": "^2.1.0",
+        "pug": "^3.0.2",
+        "sequelize": "^6.3.5",
+        "sequelize-cli": "^6.2.0"
+    }
+}

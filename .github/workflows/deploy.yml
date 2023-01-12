@@ -1,0 +1,42 @@
+name: DEPLOY TO AWS
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - Dev
+
+jobs:
+  aws-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: Dev
+      - uses: actions/setup-node@v3
+      - run: npm install
+      - run: npm run bundle
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2.1.1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: '-rltgoDzvO --delete'
+          SOURCE: 'deploy/'
+          REMOTE_HOST: 'project2.eaglesoftwareteam.com'
+          REMOTE_USER: ubuntu
+          TARGET: 'nodeapps/performance/t5'
+      - name: Execute SSH commmands on remote server
+        uses: JimCronqvist/action-ssh@master
+        env:
+          NAME: 'Root'
+        with:
+          hosts: 'ubuntu@project2.eaglesoftwareteam.com'
+          privateKey: ${{ secrets.SERVER_SSH_KEY }}
+          debug: false
+          command: |
+            cd nodeapps/performance/t5
+            npm install
+            sudo systemctl stop course-backend
+            sudo cp course-backend.service /lib/systemd/system/performance-t5-backend.service
+            sudo systemctl daemon-reload
+            sudo systemctl start performance-t5-backend
