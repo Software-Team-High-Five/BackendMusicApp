@@ -1,9 +1,9 @@
 module.exports = {
-    HOST: 't0-database.czjofbims6cw.us-west-2.rds.amazonaws.com',
+    HOST: 'localhost',
     port: 3306,
-    USER: 'admin',
-    PASSWORD: 'passwordt0',
-    DB: 'course',
+    USER: 't52022',
+    PASSWORD: 'cs@oc2022t5',
+    DB: 'performance_t5',
     dialect: 'mysql',
     pool: {
         max: 5,
