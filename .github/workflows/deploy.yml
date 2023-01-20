@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - Dev
+      - Main
 
 jobs:
   aws-deploy:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: Dev
+          ref: Main
       - uses: actions/setup-node@v3
       - run: npm install
       - run: npm run bundle
