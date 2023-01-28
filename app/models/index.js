@@ -1,4 +1,3 @@
-
 const dbConfig = require("../config/db.config.js");
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -15,5 +14,19 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.courses = require("./course.model.js")(sequelize, Sequelize);
+
+//import models
+// db.courses = require("./course.model.js")(sequelize, Sequelize);
+db.users = require("./user.model.js")(sequelize, Sequelize);
+//Events
+//Performances
+//Feedbacks
+//Composers
+//Songs
+//PerformanceSongs
+//Instruments
+//StudentInstruments
+
+//declare foreign keys
+
 module.exports = db;
