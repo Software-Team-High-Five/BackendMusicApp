@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
     }
     ,translation: {
       type: Sequelize.STRING(750)
-      ,allowNull: TRUE
+      ,allowNull: true
     }
   });
   return User;
