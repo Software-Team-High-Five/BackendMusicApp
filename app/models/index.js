@@ -51,9 +51,9 @@ db.composer.hasMany(db.song, { as: 'songs' }, { foreignKey: { allowNull: false }
 db.song.belongsTo(db.composer, { as: 'composer' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
 //Junction Tables
-db.performance.belongsToMany(db.song, { through: 'performanceSong', as: 'songs' });
-db.song.belongsToMany(db.performance, { through: 'performanceSong', as: 'performaces' });
-db.student.belongsToMany(db.instrument, { through: 'StudentInstrument', as: 'instruments' });
-db.instrument.belongsToMany(db.student, { through: 'StudentInstrument', as: 'students' });
+db.performance.belongsToMany(db.song, { through: 'performance_songs', as: 'songs' });
+db.song.belongsToMany(db.performance, { through: 'performance_songs', as: 'performaces' });
+db.student.belongsToMany(db.instrument, { through: 'Student_instruments', as: 'instruments' });
+db.instrument.belongsToMany(db.student, { through: 'Student_instruments', as: 'students' });
 
 module.exports = db;
