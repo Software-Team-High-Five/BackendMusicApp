@@ -1,6 +1,6 @@
 const db = require('../models');
 const Student = db.student;
-const Instrument = db.in;
+const Instrument = db.instrument;
 
 //Add an instrument to a student
 exports.addStudentInstrument = async (req, res) => {
