@@ -32,6 +32,8 @@ app.get("/", (req, res) => {
 
 // include the routes
 require("./app/routes/course.routes")(app);
+require("./app/routes/performance_song.routes")(app);
+require("./app/routes/student_instrument.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3025;
