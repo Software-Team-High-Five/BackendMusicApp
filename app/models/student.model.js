@@ -5,10 +5,6 @@ module.exports = (sequelize, Sequelize) => {
       ,primaryKey: true
       ,autoIncrement: true
     }
-    ,userId: {
-      type: Sequelize.INTEGER
-      ,allowNull: false
-    }
     ,classification: {
       type: Sequelize.STRING
       ,allowNull: false
