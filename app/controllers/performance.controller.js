@@ -29,6 +29,38 @@ exports.create = (req, res) => {
     })
 }
 
+exports.findAll = (req, res) => {
+    console.log('finding all');
+    const title = req.query.title;
+    var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
+    var orderBy = ['id'];
+    performance.findAll({ where: condition, order: orderBy })
+      .then(data => {
+        res.send(data);
+      })
+      .catch(e => {
+        res.status(500).send({ message: e.message || "unknown error while finding all performances" })
+      })
+  }
+  
+  exports.findOne = (req, res) => {
+    const id = req.params.id;
+    Performance.findByPk(id)
+      .then(data => {
+        if( data ){
+          res.send(data);
+        } else {
+          res.status(400).send({ message: `cannot find performance with id: ${id}` })
+        }
+      })
+      .catch(e => {
+        res.status(500).send({
+          message: e.message || `error finding performance id: ${id}`
+        })
+      })
+  }
+  
+
 exports.update = (req, res) => {
     const id = req.params.id;
     console.log(req.params);
