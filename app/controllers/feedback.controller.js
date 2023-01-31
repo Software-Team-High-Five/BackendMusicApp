@@ -30,7 +30,7 @@ exports.findAll = (req, res) => {
   console.log('finding all');
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
-  var orderBy = ['feedbackNumber'];
+  var orderBy = ['id'];
   Feedback.findAll({ where: condition, order: orderBy })
     .then(data => {
       res.send(data);
