@@ -17,7 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
 
-db.sequelize.sync()
+db.sequelize
+  .sync()
   .then(() => {
     console.log("Synced db.");
   })
@@ -32,6 +33,8 @@ app.get("/", (req, res) => {
 
 // include the routes
 require("./app/routes/course.routes")(app);
+require("./app/routes/composer.routes")(app);
+require("./app/routes/event.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3025;
