@@ -16,7 +16,7 @@ exports.addPerformanceSong = async (req, res) => {
 
   //Get the performance
   let performance;
-  let performancePromise = Performance.findByPK(performanceId)
+  let performancePromise = Performance.findByPk(performanceId)
     .then(data => {
       if (data != null)
         performance = data;
@@ -38,7 +38,7 @@ exports.addPerformanceSong = async (req, res) => {
   
   //Get the song
   let song;
-  let songPromise = Song.findByPK(songId)
+  let songPromise = Song.findByPk(songId)
     .then(data => {
       if (data != null)
         song = data;
@@ -90,7 +90,7 @@ exports.removePerformanceSong = async (req, res) => {
 
   //Get the performance
   let performance;
-  let performancePromise = Performance.findByPK(performanceId)
+  let performancePromise = Performance.findByPk(performanceId)
     .then(data => {
       if (data != null)
         performance = data;
@@ -112,7 +112,7 @@ exports.removePerformanceSong = async (req, res) => {
   
   //Get the song
   let song;
-  let songPromise = Song.findByPK(songId)
+  let songPromise = Song.findByPk(songId)
     .then(data => {
       if (data != null)
         song = data;

@@ -16,7 +16,7 @@ exports.addStudentInstrument = async (req, res) => {
 
   //Get the student
   let student;
-  let studentPromise = Student.findByPK(studentId)
+  let studentPromise = Student.findByPk(studentId)
     .then(data => {
       if (data != null)
         student = data;
@@ -38,7 +38,7 @@ exports.addStudentInstrument = async (req, res) => {
   
   //Get the instrument
   let instrument;
-  let instrumentPromise = Instrument.findByPK(instrumentId)
+  let instrumentPromise = Instrument.findByPk(instrumentId)
     .then(data => {
       if (data != null)
         instrument = data;
@@ -90,7 +90,7 @@ exports.removeStudentInstrument = async (req, res) => {
 
   //Get the student
   let student;
-  let studentPromise = Student.findByPK(studentId)
+  let studentPromise = Student.findByPk(studentId)
     .then(data => {
       if (data != null)
         student = data;
@@ -112,7 +112,7 @@ exports.removeStudentInstrument = async (req, res) => {
   
   //Get the instrument
   let instrument;
-  let instrumentPromise = Instrument.findByPK(instrumentId)
+  let instrumentPromise = Instrument.findByPk(instrumentId)
     .then(data => {
       if (data != null)
         instrument = data;
