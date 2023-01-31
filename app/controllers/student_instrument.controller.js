@@ -138,10 +138,9 @@ exports.removeStudentInstrument = async (req, res) => {
   if (error)
     return;
   
-  //Add instrument to student
-  student.addInstrument(instrument)
+  //Remove instrument from the student
+  student.removeInstrument(instrument)
     .then(data => {
-      res.send(data);
       if (data === 1)
         res.sendStatus(200);
       else

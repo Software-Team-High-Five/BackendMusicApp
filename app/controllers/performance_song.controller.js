@@ -138,10 +138,9 @@ exports.removePerformanceSong = async (req, res) => {
   if (error)
     return;
   
-  //Add song to performance
-  performance.addSong(song)
+  //Remove song from the performance
+  performance.removeSong(song)
     .then(data => {
-      res.send(data);
       if (data === 1)
         res.sendStatus(200);
       else
