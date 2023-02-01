@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 });
 
 // include the routes
-require("./app/routes/course.routes")(app);
+// require("./app/routes/course.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/student.routes")(app);
 
