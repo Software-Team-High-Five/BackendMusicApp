@@ -1,6 +1,6 @@
 const e = require('express');
 const db = require('../models');
-const Performance = db.performances;
+const Performance = db.performance;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
@@ -34,7 +34,7 @@ exports.findAll = (req, res) => {
     const title = req.query.title;
     var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
     var orderBy = ['id'];
-    performance.findAll({ where: condition, order: orderBy })
+    Performance.findAll({ where: condition, order: orderBy })
       .then(data => {
         res.send(data);
       })

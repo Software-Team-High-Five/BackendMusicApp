@@ -1,6 +1,6 @@
 const e = require('express');
 const db = require('../models');
-const Song = db.songs;
+const Song = db.song;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
