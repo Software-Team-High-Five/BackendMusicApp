@@ -4,15 +4,13 @@ const Student = db.student;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-  console.log(req, res);
-  if(!req.body.name) {
+  if(!req.body.userId) {
     console.log('bad request');
     res.status(400).send({
       message: 'Content empty'
     });
     return
   }
-
   const student = {
     id: req.body.id
     ,userId: req.body.userId

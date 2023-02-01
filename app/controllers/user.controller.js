@@ -4,20 +4,18 @@ const User = db.user;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-  console.log(req, res);
-  if(!req.body.name) {
+  if(!req.body.id) {
     console.log('bad request');
     res.status(400).send({
       message: 'Content empty'
     });
     return
   }
-
   const user = {
     id: req.body.id
     ,role: req.body.role
-    ,fname: req.body.fname
-    ,lname: req.body.lname
+    ,fName: req.body.fname
+    ,lName: req.body.lname
     ,email: req.body.email
   };
   User.create(user)
