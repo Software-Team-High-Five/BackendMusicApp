@@ -25,7 +25,7 @@ db.composer = require("./composer.model.js")(sequelize, Sequelize);
 db.song = require("./song.model.js")(sequelize, Sequelize);
 db.instrument = require("./instrument.model.js")(sequelize, Sequelize);
 
-//Foriegn Keys
+//Foreign Keys
 db.user.hasOne(db.student);
 db.student.belongsTo(db.user);
 
@@ -34,14 +34,14 @@ db.performance.belongsTo(db.event);
 db.student.hasMany(db.performance);
 db.performance.belongsTo(db.student);
 db.user.hasMany(db.performance);
-db.performance.belongsTo(db.user, { as: 'instructor' });
+db.performance.belongsTo(db.user/*, { as: 'instructor' }*/);
 db.instrument.hasMany(db.performance);
 db.performance.belongsTo(db.instrument);
 
 db.performance.hasMany(db.feedback);
 db.feedback.belongsTo(db.performance);
 db.user.hasMany(db.feedback);
-db.feedback.belongsTo(db.user, { as: 'judge' });
+db.feedback.belongsTo(db.user/*, { as: 'judge' }*/);
 
 db.student.hasMany(db.song);
 db.song.belongsTo(db.student);
