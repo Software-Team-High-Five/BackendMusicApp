@@ -1,6 +1,6 @@
 const e = require("express");
 const db = require("../models");
-const Composer = db.composers;
+const Composer = db.composer;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
