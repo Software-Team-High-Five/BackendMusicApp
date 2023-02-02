@@ -42,6 +42,9 @@ require("./app/routes/song.routes")(app);
 require("./app/routes/composer.routes")(app);
 require("./app/routes/event.routes")(app);
 
+require("./app/routes/performance_song.routes")(app);
+require("./app/routes/student_instrument.routes")(app);
+
 // set port, listen for requests
 const PORT = process.env.PORT || 3025;
 app.listen(PORT, () => {
