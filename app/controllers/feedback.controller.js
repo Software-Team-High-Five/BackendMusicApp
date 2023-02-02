@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
   console.log(req, res);
-  if(!req.body.name) {
+  if(!req.body.id) {
     console.log('bad request');
     res.status(400).send({
       message: 'Content empty'
