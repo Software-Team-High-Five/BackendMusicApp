@@ -1,6 +1,6 @@
 const e = require("express");
 const db = require("../models");
-const Event = db.events;
+const Event = db.event;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
