@@ -13,6 +13,7 @@ exports.create = (req, res) => {
   }
   const student = {
     id: req.body.id
+    ,userId: req.body.userId
     ,classification: req.body.classification
     ,major: req.body.major
     ,semester: req.body.semester
