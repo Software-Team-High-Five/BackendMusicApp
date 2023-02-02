@@ -31,7 +31,10 @@ app.get("/", (req, res) => {
 });
 
 // include the routes
-require("./app/routes/course.routes")(app);
+// require("./app/routes/course.routes")(app);
+require("./app/routes/user.routes")(app);
+require("./app/routes/student.routes")(app);
+
 require("./app/routes/performance.routes")(app);
 require("./app/routes/song.routes")(app);
 

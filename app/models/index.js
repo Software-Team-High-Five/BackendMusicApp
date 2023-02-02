@@ -26,29 +26,29 @@ db.song = require("./song.model.js")(sequelize, Sequelize);
 db.instrument = require("./instrument.model.js")(sequelize, Sequelize);
 
 //Foriegn Keys
-db.user.hasOne(db.student, { as: 'student' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.student.belongsTo(db.user, { as: 'user' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+db.user.hasOne(db.student);
+db.student.belongsTo(db.user);
 
-db.event.hasMany(db.performance, { as: 'performances' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.performance.belongsTo(db.event, { as: 'event' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.student.hasMany(db.performance, { as: 'performances' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.performance.belongsTo(db.student, { as: 'student' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.user.hasMany(db.performance, { as: 'performances' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.performance.belongsTo(db.user, { as: 'instructor' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.instrument.hasMany(db.performance, { as: 'performances' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.performance.belongsTo(db.instrument, { as: 'instrument' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+db.event.hasMany(db.performance);
+db.performance.belongsTo(db.event);
+db.student.hasMany(db.performance);
+db.performance.belongsTo(db.student);
+db.user.hasMany(db.performance);
+db.performance.belongsTo(db.user, { as: 'instructor' });
+db.instrument.hasMany(db.performance);
+db.performance.belongsTo(db.instrument);
 
-db.performance.hasMany(db.feedback, { as: 'feedbacks' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.feedback.belongsTo(db.performance, { as: 'performance' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.user.hasMany(db.feedback, { as: 'feedbacks' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.feedback.belongsTo(db.user, { as: 'judge' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+db.performance.hasMany(db.feedback);
+db.feedback.belongsTo(db.performance);
+db.user.hasMany(db.feedback);
+db.feedback.belongsTo(db.user, { as: 'judge' });
 
-db.student.hasMany(db.song, { as: 'songs' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.song.belongsTo(db.student, { as: 'student' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.instrument.hasMany(db.song, { as: 'songs' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.song.belongsTo(db.instrument, { as: 'instrument' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.composer.hasMany(db.song, { as: 'songs' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-db.song.belongsTo(db.composer, { as: 'composer' }, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+db.student.hasMany(db.song);
+db.song.belongsTo(db.student);
+db.instrument.hasMany(db.song);
+db.song.belongsTo(db.instrument,);
+db.composer.hasMany(db.song);
+db.song.belongsTo(db.composer);
 
 //Junction Tables
 db.performance.belongsToMany(db.song, { through: 'performance_songs', as: 'songs' });
