@@ -1,6 +1,6 @@
 const e = require('express');
 const db = require('../models');
-const Feedback = db.feedbacks;
+const Feedback = db.feedback;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {

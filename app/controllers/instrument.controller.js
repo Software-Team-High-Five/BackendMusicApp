@@ -1,6 +1,6 @@
 const e = require('express');
 const db = require('../models');
-const Instrument = db.instruments;
+const Instrument = db.instrument;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
@@ -14,8 +14,8 @@ exports.create = (req, res) => {
   }
 
   const instrument = {
-    id: req.body.id
-    ,instrument: req.body.instrument
+    id: req.body.id,
+    instrument: req.body.instrument
   };
   Instrument.create(instrument)
     .then(data => {
@@ -35,9 +35,10 @@ exports.findAll = (req, res) => {
     .then(data => {
       res.send(data);
     })
-    .catch(e => {
-      res.status(500).send({ message: e.message || "unknown error while finding all instruments" })
-    })
+    .catch((e) => {
+      res.status(500).send({ 
+        message: e.message || "unknown error while finding all instruments" })
+    });
 }
 
 exports.findOne = (req, res) => {
@@ -69,24 +70,24 @@ exports.update = (req, res) => {
         res.status(400).send({ message: `cannot update instrument (id: ${id})`})
       }
     })
-    .catch(e => {
+    .catch((e) => {
       res.status(500).send({
         message: e.message || `error updating instrument (id: ${id})`
-      })
-    })
-}
+      });
+    });
+};
 
 exports.delete = (req, res) => {
   const id = req.params.id;
   Instrument.destroy({ where: {id: id}})
-    .then(num => {
+    .then((num)=> {
       if( num == 1 ){
         res.send({ message: `instrument (id: ${id}) deleted successfully`})
       } else {
         res.status(400).send({ message: `unable to delete instrument (id: ${id})` })
       }
     })
-    .catch(e => {
+    .catch((e) => {
       res.status(500).send({ message: e.message || `error during instrument delete (id: ${id})`})
-    })
-}
+    });
+};
