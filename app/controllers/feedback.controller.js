@@ -5,18 +5,18 @@ const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
   console.log(req, res);
-  if(!req.body.name) {
+  if(!req.body.notes) {
     console.log('bad request');
     res.status(400).send({
       message: 'Content empty'
     });
     return
   }
-
   const feedback = {
     id: req.body.id
     ,notes: req.body.notes
   };
+  console.log(feedback);
   Feedback.create(feedback)
     .then(data => {
       res.send(data);
