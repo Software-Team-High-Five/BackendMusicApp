@@ -100,3 +100,14 @@ exports.delete = (req, res) => {
       });
     });
 };
+
+exports.getActive = (req, res) => {
+  const now = Date.now();
+  Event.findAll({ where: Op.date > now })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(e => {
+      console.log(e);
+    })
+}
