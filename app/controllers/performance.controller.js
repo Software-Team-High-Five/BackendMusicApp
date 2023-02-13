@@ -107,5 +107,5 @@ exports.findAllForStudent = (req, res) => {
       ,{ model: db.user, as: 'instructor' }
     ]})
   .then(data => {res.send(data)})
-  .catch(e => res.status(500).send({message: e.message || "unknown error"})
-  )}
+  .catch(e => res.status(500).send({message: e.message || "unknown error"}))
+}
