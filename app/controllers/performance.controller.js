@@ -99,8 +99,13 @@ exports.findAllForStudent = (req, res) => {
   var condition = {studentId: { [Op.eq]: sid}}
   Performance.findAll({
     where: condition
-    ,include: [db.event, db.feedback, db.instrument]
-    })
+    ,include: [
+      db.event
+      ,db.instrument
+      ,{ model: db.song, as: 'songs' }
+      ,{ model: db.feedback, include: {model: db.user, as: 'judge'} }
+      ,{ model: db.user, as: 'instructor' }
+    ]})
   .then(data => {res.send(data)})
   .catch(e => res.status(500).send({message: e.message || "unknown error"})
   )}
