@@ -44,7 +44,7 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Student.findByPk(id)
+  Student.findByPk(id, { include: { model: db.instrument, as: 'instruments' }})
     .then(data => {
       if( data ){
         res.send(data);
