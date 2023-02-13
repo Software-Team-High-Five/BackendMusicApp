@@ -33,7 +33,7 @@ exports.findAll = (req, res) => {
     const title = req.query.title;
     var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
     var orderBy = ['title'];
-    Song.findAll({ where: condition, order: orderBy })
+    Song.findAll({ where: condition, order: orderBy, include: db.composer })
       .then(data => {
         res.send(data);
       })
