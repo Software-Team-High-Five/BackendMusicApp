@@ -18,6 +18,10 @@ exports.create = (req, res) => {
     ,startTime: req.body.startTime
     ,endTime: req.body.endTime
     ,accompanist: req.body.accompanist
+    ,eventId: req.body.eventId
+    ,studentId: req.body.studentId
+    ,instructorId: req.body.instructorId
+    ,instrumentId: req.body.instrumentId
   };
 
   Performance.create(performance)
