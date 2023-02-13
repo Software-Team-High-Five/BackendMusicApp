@@ -103,7 +103,7 @@ exports.findAllForStudent = (req, res) => {
       db.event
       ,db.instrument
       ,{ model: db.song, as: 'songs' }
-      ,{ model: db.feedback, include: {model: db.user, as: 'judge'} }
+      ,{ model: db.feedback, include: { model: db.user, as: 'judge' }}
       ,{ model: db.user, as: 'instructor' }
     ]})
   .then(data => {res.send(data)})
