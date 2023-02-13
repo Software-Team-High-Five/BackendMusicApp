@@ -100,3 +100,18 @@ exports.delete = (req, res) => {
       });
     });
 };
+
+exports.findUpcomingEvents = (req, res) => {
+  const current = new Date();
+  var condition = {date: {[Op.gte]: current} }
+  var orderBy = ["date"];
+  Event.findAll({ where: condition, order: orderBy })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((e) => {
+      res.status(500).send({
+        message: e.message || "unknown error while finding all events",
+      });
+    });
+}
