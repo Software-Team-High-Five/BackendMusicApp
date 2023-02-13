@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
   console.log(req, res);
-  if(!req.body.name) {
+  if(!req.body.startTime) {
     console.log('bad request');
     res.status(400).send({
       message: 'Content empty'
@@ -41,25 +41,24 @@ exports.findAll = (req, res) => {
       .catch(e => {
         res.status(500).send({ message: e.message || "unknown error while finding all performances" })
       })
-  }
-  
-  exports.findOne = (req, res) => {
-    const id = req.params.id;
-    Performance.findByPk(id)
-      .then(data => {
-        if( data ){
-          res.send(data);
-        } else {
-          res.status(400).send({ message: `cannot find performance with id: ${id}` })
-        }
+}
+
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+  Performance.findByPk(id)
+    .then(data => {
+      if( data ){
+        res.send(data);
+      } else {
+        res.status(400).send({ message: `cannot find performance with id: ${id}` })
+      }
+    })
+    .catch(e => {
+      res.status(500).send({
+        message: e.message || `error finding performance id: ${id}`
       })
-      .catch(e => {
-        res.status(500).send({
-          message: e.message || `error finding performance id: ${id}`
-        })
-      })
-  }
-  
+    })
+}
 
 exports.update = (req, res) => {
     const id = req.params.id;
@@ -78,19 +77,30 @@ exports.update = (req, res) => {
           message: e.message || `error updating performance (id: ${id})`
         })
       })
-  }
-  
-  exports.delete = (req, res) => {
-    const id = req.params.id;
-    Performance.destroy({ where: {id: id}})
-      .then(num => {
-        if( num == 1 ){
-          res.send({ message: `performance (id: ${id}) deleted successfully`})
-        } else {
-          res.status(400).send({ message: `unable to delete performance (id: ${id})` })
-        }
-      })
-      .catch(e => {
-        res.status(500).send({ message: e.message || `error during performance delete (id: ${id})`})
-      })
-  }
+}
+
+exports.delete = (req, res) => {
+  const id = req.params.id;
+  Performance.destroy({ where: {id: id}})
+    .then(num => {
+      if( num == 1 ){
+        res.send({ message: `performance (id: ${id}) deleted successfully`})
+      } else {
+        res.status(400).send({ message: `unable to delete performance (id: ${id})` })
+      }
+    })
+    .catch(e => {
+      res.status(500).send({ message: e.message || `error during performance delete (id: ${id})`})
+    })
+}
+
+exports.findAllForStudent = (req, res) => {
+  const sid = req.params.id;
+  var condition = {studentId: { [Op.eq]: sid}}
+  Performance.findAll({
+    where: condition
+    ,include: [db.event, db.feedback, db.instrument]
+    })
+  .then(data => {res.send(data)})
+  .catch(e => res.status(500).send({message: e.message || "unknown error"})
+  )}
