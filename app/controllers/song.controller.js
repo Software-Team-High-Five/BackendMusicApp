@@ -33,7 +33,7 @@ exports.findAll = (req, res) => {
     const title = req.query.title;
     var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
     var orderBy = ['title'];
-    Song.findAll({ where: condition, order: orderBy })
+    Song.findAll({ where: condition, order: orderBy, include: db.composer })
       .then(data => {
         res.send(data);
       })
@@ -44,7 +44,7 @@ exports.findAll = (req, res) => {
   
   exports.findOne = (req, res) => {
     const id = req.params.id;
-    Song.findByPk(id)
+    Song.findByPk(id, {include: [db.composer, db.instrument]})
       .then(data => {
         if( data ){
           res.send(data);
