@@ -44,7 +44,7 @@ exports.findAll = (req, res) => {
   
   exports.findOne = (req, res) => {
     const id = req.params.id;
-    Song.findByPk(id)
+    Song.findByPk(id, {include: [db.composer, db.instrument]})
       .then(data => {
         if( data ){
           res.send(data);
