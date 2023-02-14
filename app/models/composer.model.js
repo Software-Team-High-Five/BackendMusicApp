@@ -23,7 +23,7 @@ module.exports = (sequelize, Sequelize) => {
     }
     ,dDate: {
       type: Sequelize.DATEONLY
-      ,allowNull: false
+      ,allowNull: true
     }
   });
   return User;

@@ -46,9 +46,12 @@ db.feedback.belongsTo(db.user, { as: 'judge' });
 db.student.hasMany(db.song);
 db.song.belongsTo(db.student);
 db.instrument.hasMany(db.song);
-db.song.belongsTo(db.instrument,);
+db.song.belongsTo(db.instrument);
 db.composer.hasMany(db.song);
 db.song.belongsTo(db.composer);
+
+db.user.hasMany(db.student);
+db.student.belongsTo(db.user, { as: 'instructor' });
 
 //Junction Tables
 db.performance.belongsToMany(db.song, { through: 'performance_songs', as: 'songs' });
