@@ -52,16 +52,22 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
   const iid = req.query.iid;
-  const condition = iid ? { instructorId: {[Op.eq]: parseInt(iid) } } : null; 
-  
+  const condition = iid ? { instructorId: { [Op.eq]: parseInt(iid) } } : null;
+
   Event.findByPk(id, {
     include: {
-      model: db.performance, where: condition, include: [{
-        model: db.student, include: {
-          model: db.user
-        }
-      }, {model: db.song, as: 'songs', include: db.composer}, db.instrument]
-    }
+      model: db.performance,
+      where: condition,
+      include: [
+        {
+          model: db.student,
+          include: { model: db.user },
+        },
+        { model: db.song, as: "songs", include: db.composer },
+        db.instrument,
+        { model: db.feedback, include: { model: db.user, as: "judge" } },
+      ],
+    },
   })
     .then((data) => {
       if (data) {
@@ -115,7 +121,7 @@ exports.delete = (req, res) => {
 
 exports.findUpcomingEvents = (req, res) => {
   const current = new Date();
-  var condition = {date: {[Op.gte]: current} }
+  var condition = { date: { [Op.gte]: current } };
   var orderBy = ["date"];
   Event.findAll({ where: condition, order: orderBy })
     .then((data) => {
@@ -126,4 +132,4 @@ exports.findUpcomingEvents = (req, res) => {
         message: e.message || "unknown error while finding all events",
       });
     });
-}
+};
