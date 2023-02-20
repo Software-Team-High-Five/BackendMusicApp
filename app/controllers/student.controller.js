@@ -92,3 +92,16 @@ exports.delete = (req, res) => {
       res.status(500).send({ message: e.message || `error during student delete (id: ${id})`})
     })
 }
+
+exports.instructorStudents = (req, res) => {
+  const id = req.params.id;
+  Student.findAll(
+    {include: [
+      {model: db.user}
+    ]},
+    {where: {
+      instructorId: {[Op.eq]: id }
+    }})
+    .then(data => res.send(data))
+    .catch(e => res.status(500).send({ message: e.message || 'unknown error finding students'}));
+}   
