@@ -53,7 +53,7 @@ exports.findOne = (req, res) => {
   Performance.findByPk(id, {include: [
       db.event
       ,db.instrument
-      ,{ model: db.song, as: 'songs' }
+      ,{ model: db.song, as: 'songs', include: db.composer }
       ,{ model: db.feedback, include: {model: db.user, as: 'judge'} }
       ,{ model: db.user, as: 'instructor' }
     ]}
