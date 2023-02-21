@@ -4,7 +4,8 @@ const User = db.user;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-  if(!req.body.id) {
+  
+  if(!req.body.fname) {
     console.log('bad request');
     res.status(400).send({
       message: 'Content empty'
@@ -28,11 +29,10 @@ exports.create = (req, res) => {
 }
 
 exports.findAll = (req, res) => {
-  console.log('finding all');
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
   var orderBy = ['id'];
-  User.findAll({ where: condition, order: orderBy })
+  User.findAll({ where: condition, order: orderBy, include:db.student })
     .then(data => {
       res.send(data);
     })
@@ -44,7 +44,7 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  User.findByPk(id)
+  User.findByPk(id, { include: db.student })
     .then(data => {
       if( data ){
         res.send(data);
@@ -61,8 +61,6 @@ exports.findOne = (req, res) => {
 
 exports.update = (req, res) => {
   const id = req.params.id;
-  console.log(req.params);
-  console.log(req.body);
   User.update(req.body, { where: {id: id} })
     .then(num => {
       if(num == 1){

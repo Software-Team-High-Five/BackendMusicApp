@@ -4,7 +4,7 @@ const Course = db.courses;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-  console.log(req, res);
+  // console.log(req, res);
   if(!req.body.name) {
     console.log('bad request');
     res.status(400).send({
@@ -32,7 +32,7 @@ exports.create = (req, res) => {
 }
 
 exports.findAll = (req, res) => {
-  console.log('finding all');
+  //console.log('finding all');
   const title = req.query.title;
   var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
   var orderBy = ['courseNumber'];
@@ -64,8 +64,8 @@ exports.findOne = (req, res) => {
 
 exports.update = (req, res) => {
   const id = req.params.id;
-  console.log(req.params);
-  console.log(req.body);
+  // console.log(req.params);
+  // console.log(req.body);
   Course.update(req.body, { where: {id: id} })
     .then(num => {
       if(num == 1){
