@@ -34,10 +34,10 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => {
   console.log("finding all");
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  // const title = req.query.title;
+  // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   var orderBy = ["lName"];
-  Composer.findAll({ where: condition, order: orderBy })
+  Composer.findAll({ /*where: condition,*/ order: orderBy })
     .then((data) => {
       res.send(data);
     })

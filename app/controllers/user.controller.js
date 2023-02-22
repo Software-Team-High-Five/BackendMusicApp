@@ -29,10 +29,10 @@ exports.create = (req, res) => {
 }
 
 exports.findAll = (req, res) => {
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
+  // const title = req.query.title;
+  // var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
   var orderBy = ['id'];
-  User.findAll({ where: condition, order: orderBy, include:db.student })
+  User.findAll({ /*where: condition,*/ order: orderBy, include:db.student })
     .then(data => {
       res.send(data);
     })

@@ -4,7 +4,6 @@ const Feedback = db.feedback;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-  console.log(req, res);
   if(!req.body.notes) {
     console.log('bad request');
     res.status(400).send({
@@ -15,8 +14,9 @@ exports.create = (req, res) => {
   const feedback = {
     id: req.body.id
     ,notes: req.body.notes
+    ,performanceId: req.body.performanceId
+    ,judgeId: req.body.judgeId
   };
-  console.log(feedback);
   Feedback.create(feedback)
     .then(data => {
       res.send(data);
@@ -27,11 +27,10 @@ exports.create = (req, res) => {
 }
 
 exports.findAll = (req, res) => {
-  console.log('finding all');
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
+  // const title = req.query.title;
+  // var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
   var orderBy = ['id'];
-  Feedback.findAll({ where: condition, order: orderBy })
+  Feedback.findAll({ /*where: condition,*/ order: orderBy })
     .then(data => {
       res.send(data);
     })
@@ -59,8 +58,6 @@ exports.findOne = (req, res) => {
 
 exports.update = (req, res) => {
   const id = req.params.id;
-  console.log(req.params);
-  console.log(req.body);
   Feedback.update(req.body, { where: {id: id} })
     .then(num => {
       if(num == 1){

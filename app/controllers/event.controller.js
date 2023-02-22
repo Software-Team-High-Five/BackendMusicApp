@@ -35,10 +35,10 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => {
   console.log("finding all");
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  // const title = req.query.title;
+  // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   var orderBy = ["date"];
-  Event.findAll({ where: condition, order: orderBy, include: db.performance })
+  Event.findAll({ /*where: condition,*/ order: orderBy, include: db.performance })
     .then((data) => {
       res.send(data);
     })
