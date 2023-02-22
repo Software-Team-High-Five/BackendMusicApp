@@ -55,7 +55,7 @@ exports.findOne = (req, res) => {
       ,db.instrument
       ,{ model: db.song, as: 'songs', include: db.composer }
       ,{ model: db.feedback, include: {model: db.user, as: 'judge'} }
-      ,{ model: db.user, as: 'instructor' }
+      ,{ model: db.user, as: 'studentInstructor' }
     ]}
   )
     .then(data => {
@@ -117,6 +117,6 @@ exports.findAllForInstructor = (req, res) => {
 exports.findAllForStudent = (req, res) => {
   const id = req.params.id;
   const condition = {studentId: {[Op.eq]: id}};
-  const include =  { model: db.user, as: 'instructor' }
+  const include =  { model: db.user, as: 'studentInstructor' }
   util.findAllForUser(condition, include, res)
 }
