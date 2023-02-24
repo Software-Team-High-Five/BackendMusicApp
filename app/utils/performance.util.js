@@ -15,7 +15,7 @@ exports.findAllForUser = (condition, i, res) => {
     }
     Performance.findAll({
         where: condition
-        ,include: includes,
+        ,include: includes
     })
         .then(data => {res.send(data)})
         .catch(e => res.status(500).send({message: e.message || 'unknown error'}))

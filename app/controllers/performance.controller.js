@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 const util = require('../utils/performance.util');
 
 exports.create = (req, res) => {
-  console.log(req, res);
+  // console.log(req, res);
   if(!req.body.startTime) {
     console.log('bad request');
     res.status(400).send({
@@ -68,14 +68,13 @@ exports.findOne = (req, res) => {
     .catch(e => {
       res.status(500).send({
         message: e.message || `error finding performance id: ${id}`
-      })
+      });
+      console.log(e);
     })
 }
 
 exports.update = (req, res) => {
     const id = req.params.id;
-    console.log(req.params);
-    console.log(req.body);
     Performance.update(req.body, { where: {id: id} })
       .then(num => {
         if(num == 1){
@@ -135,18 +134,17 @@ exports.getEditPerformance = (req, res) => {
   const eid = req.params.eventId;
   const sid = req.params.studentId;
   Performance.findOne({
-    where: {
-      eventId: {[Op.eq]: eid}
-      ,studentId: {[Op.eq]: sid}
-    }
-    ,include: [
+    include: [
       db.event
       ,db.instrument
       ,{ model: db.song, as: 'songs', include: db.composer }
-      ,{ model: db.feedback, include: {model: db.user, as: 'judge'} }
-      ,{ model: db.user, as: 'instructor' }
     ]
+    ,where: {
+      eventId: {[Op.eq]: eid}
+      ,studentId: {[Op.eq]: sid}
+    }
+
   })
   .then(data => res.send(data))
-  .catch(e => res.status(500).send({message: e || 'unknown error'}));
+  .catch(e => {res.status(500).send({message: e || 'unknown error'}); console.log(e)});
 }
