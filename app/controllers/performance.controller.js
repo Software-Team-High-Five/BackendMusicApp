@@ -120,3 +120,33 @@ exports.findAllForStudent = (req, res) => {
   const include =  { model: db.user, as: 'instructor' }
   util.findAllForUser(condition, include, res)
 }
+
+exports.getTakenTimes = (req, res) => {
+  const eventId = req.params.id;
+  Performance.findAll({
+    attributes: ['startTime', 'endTime']
+    ,where: { eventId: {[Op.eq]: eventId} }
+  })
+  .then(data => {res.send(data)})
+  .catch(e => {res.status(500).send({message:  ( e || 'unknown error' )})} )
+}
+
+exports.getEditPerformance = (req, res) => {
+  const eid = req.params.eventId;
+  const sid = req.params.studentId;
+  Performance.findOne({
+    where: {
+      eventId: {[Op.eq]: eid}
+      ,studentId: {[Op.eq]: sid}
+    }
+    ,include: [
+      db.event
+      ,db.instrument
+      ,{ model: db.song, as: 'songs', include: db.composer }
+      ,{ model: db.feedback, include: {model: db.user, as: 'judge'} }
+      ,{ model: db.user, as: 'instructor' }
+    ]
+  })
+  .then(data => res.send(data))
+  .catch(e => res.status(500).send({message: e || 'unknown error'}));
+}

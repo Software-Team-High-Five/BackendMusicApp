@@ -10,6 +10,8 @@ module.exports = app => {
     router.get("/:id", performances.findOne);
     router.put("/:id", performances.update);
     router.delete("/:id", performances.delete);
+    router.get("/takenTimes/:id", performances.getTakenTimes);
+    router.get("/editPerformance/:eventId/:studentId", performances.getEditPerformance);
 
     app.use('/performance-t5/performances', router);   
 };
