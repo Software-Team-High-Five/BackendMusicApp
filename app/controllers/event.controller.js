@@ -15,6 +15,7 @@ exports.create = (req, res) => {
 
   const event = {
     id: req.body.id,
+    name: req.body.name,
     date: req.body.date,
     type: req.body.type,
     startTime: req.body.startTime,
@@ -34,10 +35,10 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => {
   console.log("finding all");
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  // const title = req.query.title;
+  // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   var orderBy = ["date"];
-  Event.findAll({ where: condition, order: orderBy })
+  Event.findAll({ /*where: condition,*/ order: orderBy, include: db.performance })
     .then((data) => {
       res.send(data);
     })
@@ -50,7 +51,24 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Event.findByPk(id)
+  const iid = req.query.iid;
+  const condition = iid ? { instructorId: { [Op.eq]: parseInt(iid) } } : null;
+
+  Event.findByPk(id, {
+    include: {
+      model: db.performance,
+      where: condition,
+      include: [
+        {
+          model: db.student,
+          include: { model: db.user },
+        },
+        { model: db.song, as: "songs", include: db.composer },
+        db.instrument,
+        { model: db.feedback, include: { model: db.user, as: "judge" } },
+      ],
+    },
+  })
     .then((data) => {
       if (data) {
         res.send(data);
@@ -103,7 +121,7 @@ exports.delete = (req, res) => {
 
 exports.findUpcomingEvents = (req, res) => {
   const current = new Date();
-  var condition = {date: {[Op.gte]: current} }
+  var condition = { date: { [Op.gte]: current } };
   var orderBy = ["date"];
   Event.findAll({ where: condition, order: orderBy })
     .then((data) => {
@@ -114,4 +132,4 @@ exports.findUpcomingEvents = (req, res) => {
         message: e.message || "unknown error while finding all events",
       });
     });
-}
+};

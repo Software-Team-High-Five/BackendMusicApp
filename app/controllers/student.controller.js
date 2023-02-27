@@ -4,7 +4,7 @@ const Student = db.student;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-  if(!req.body.userId) {
+  if(!req.body.id) {
     console.log('bad request');
     res.status(400).send({
       message: 'Content empty'
@@ -13,11 +13,11 @@ exports.create = (req, res) => {
   }
   const student = {
     id: req.body.id
-    ,userId: req.body.userId
     ,classification: req.body.classification
     ,major: req.body.major
     ,semester: req.body.semester
     ,level: req.body.level
+    ,instructorId: req.body.instructorId
   };
   Student.create(student)
     .then(data => {
@@ -30,10 +30,10 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => {
   console.log('finding all');
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
+  // const title = req.query.title;
+  // var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
   var orderBy = ['id'];
-  Student.findAll({ where: condition, order: orderBy })
+  Student.findAll({ /*where: condition,*/ order: orderBy })
     .then(data => {
       res.send(data);
     })
@@ -92,3 +92,16 @@ exports.delete = (req, res) => {
       res.status(500).send({ message: e.message || `error during student delete (id: ${id})`})
     })
 }
+
+exports.instructorStudents = (req, res) => {
+  const id = req.params.id;
+  Student.findAll(
+    {include: [
+      {model: db.user}
+    ]},
+    {where: {
+      instructorId: {[Op.eq]: id }
+    }})
+    .then(data => res.send(data))
+    .catch(e => res.status(500).send({ message: e.message || 'unknown error finding students'}));
+}   

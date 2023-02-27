@@ -2,9 +2,10 @@ const e = require('express');
 const db = require('../models');
 const Performance = db.performance;
 const Op = db.Sequelize.Op;
+const util = require('../utils/performance.util');
 
 exports.create = (req, res) => {
-  console.log(req, res);
+  // console.log(req, res);
   if(!req.body.startTime) {
     console.log('bad request');
     res.status(400).send({
@@ -49,7 +50,14 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Performance.findByPk(id)
+  Performance.findByPk(id, {include: [
+      db.event
+      ,db.instrument
+      ,{ model: db.song, as: 'songs', include: db.composer }
+      ,{ model: db.feedback, include: {model: db.user, as: 'judge'} }
+      ,{ model: db.user, as: 'studentInstructor' }
+    ]}
+  )
     .then(data => {
       if( data ){
         res.send(data);
@@ -60,14 +68,13 @@ exports.findOne = (req, res) => {
     .catch(e => {
       res.status(500).send({
         message: e.message || `error finding performance id: ${id}`
-      })
+      });
+      console.log(e);
     })
 }
 
 exports.update = (req, res) => {
     const id = req.params.id;
-    console.log(req.params);
-    console.log(req.body);
     Performance.update(req.body, { where: {id: id} })
       .then(num => {
         if(num == 1){
@@ -98,18 +105,46 @@ exports.delete = (req, res) => {
     })
 }
 
+exports.findAllForInstructor = (req, res) => {
+  const id = req.params.id;
+  const condition =  {instructorId: { [Op.eq]: id }};
+  // const include = { model: db.user, as: 'student' };
+  const include = null;
+  util.findAllForUser(condition, include, res)
+}
+
 exports.findAllForStudent = (req, res) => {
-  const sid = req.params.id;
-  var condition = {studentId: { [Op.eq]: sid}}
+  const id = req.params.id;
+  const condition = {studentId: {[Op.eq]: id}};
+  const include =  { model: db.user, as: 'studentInstructor' }
+  util.findAllForUser(condition, include, res)
+}
+
+exports.getTakenTimes = (req, res) => {
+  const eventId = req.params.id;
   Performance.findAll({
-    where: condition
-    ,include: [
+    attributes: ['startTime', 'endTime']
+    ,where: { eventId: {[Op.eq]: eventId} }
+  })
+  .then(data => {res.send(data)})
+  .catch(e => {res.status(500).send({message:  ( e || 'unknown error' )})} )
+}
+
+exports.getEditPerformance = (req, res) => {
+  const eid = req.params.eventId;
+  const sid = req.params.studentId;
+  Performance.findOne({
+    include: [
       db.event
       ,db.instrument
-      ,{ model: db.song, as: 'songs' }
-      ,{ model: db.feedback, include: {model: db.user, as: 'judge'} }
-      ,{ model: db.user, as: 'instructor' }
-    ]})
-  .then(data => {res.send(data)})
-  .catch(e => res.status(500).send({message: e.message || "unknown error"})
-  )}
+      ,{ model: db.song, as: 'songs', include: db.composer }
+    ]
+    ,where: {
+      eventId: {[Op.eq]: eid}
+      ,studentId: {[Op.eq]: sid}
+    }
+
+  })
+  .then(data => res.send(data))
+  .catch(e => {res.status(500).send({message: e || 'unknown error'}); console.log(e)});
+}
