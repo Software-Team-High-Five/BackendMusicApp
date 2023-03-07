@@ -24,6 +24,9 @@ db.feedback = require("./feedback.model.js")(sequelize, Sequelize);
 db.composer = require("./composer.model.js")(sequelize, Sequelize);
 db.song = require("./song.model.js")(sequelize, Sequelize);
 db.instrument = require("./instrument.model.js")(sequelize, Sequelize);
+db.role = require("./role.model.js")(sequelize, Sequelize);
+db.availability = require("./availability.model.js")(sequelize, Sequelize);
+
 
 //Foriegn Keys
 db.user.hasOne(db.student, { foreignKey: 'id' });
@@ -35,6 +38,8 @@ db.student.hasMany(db.performance);
 db.performance.belongsTo(db.student);
 db.user.hasMany(db.performance, { as: 'studentInstructor', foreignKey: 'instructorId' });
 db.performance.belongsTo(db.user, { as: 'studentInstructor', foreignKey: 'instructorId' });
+db.performance.belongsTo(db.user, { as: 'accompanist', foreignKey: 'accompanistId' });
+
 db.instrument.hasMany(db.performance);
 db.performance.belongsTo(db.instrument);
 
@@ -53,10 +58,19 @@ db.song.belongsTo(db.composer);
 db.user.hasMany(db.student, { as: 'instructor', foreignKey: 'instructorId' });
 db.student.belongsTo(db.user, { as: 'instructor', foreignKey: 'instructorId' });
 
+// availability associations 
+db.event.hasMany(db.availability)
+db.availability.belongsTo(db.event);
+db.availability.belongsTo(db.user);
+
 //Junction Tables
 db.performance.belongsToMany(db.song, { through: 'performance_songs', as: 'songs' });
 db.song.belongsToMany(db.performance, { through: 'performance_songs', as: 'performaces' });
-db.student.belongsToMany(db.instrument, { through: 'Student_instruments', as: 'instruments' });
-db.instrument.belongsToMany(db.student, { through: 'Student_instruments', as: 'students' });
+
+db.user.belongsToMany(db.instrument, { through: 'user_instruments', as: 'instruments' });
+db.instrument.belongsToMany(db.user, { through: 'user_instruments', as: 'users' });
+
+db.user.belongsToMany(db.role, { through: 'user_roles', as: 'roles' });
+db.role.belongsToMany(db.user, { through: 'user_roles', as: 'users' });
 
 module.exports = db;

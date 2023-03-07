@@ -14,7 +14,6 @@ exports.create = (req, res) => {
   }
   const user = {
     id: req.body.id
-    ,role: req.body.role
     ,fName: req.body.fname
     ,lName: req.body.lname
     ,email: req.body.email
@@ -29,10 +28,13 @@ exports.create = (req, res) => {
 }
 
 exports.findAll = (req, res) => {
-  // const title = req.query.title;
-  // var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
+
   var orderBy = ['id'];
-  User.findAll({ /*where: condition,*/ order: orderBy, include: { model: db.student, include: { model: db.instrument, as: "instruments" } } })
+  User.findAll({ order: orderBy, include: [
+    { model: db.student },
+    { model: db.instrument, as: 'instruments'},
+    { model: db.role, as: 'roles' }
+  ]})
     .then(data => {
       res.send(data);
     })
@@ -44,7 +46,11 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  User.findByPk(id, { include: { model: db.student, include: { model: db.instrument, as: "instruments" } }})
+  User.findByPk(id, { include: [
+        { model: db.student },
+        { model: db.instrument, as: "instruments" },
+        { model: db.role, as: 'roles'} 
+    ]})
     .then(data => {
       if( data ){
         res.send(data);
