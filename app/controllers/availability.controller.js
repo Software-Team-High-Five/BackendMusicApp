@@ -1,10 +1,9 @@
 const e = require("express");
 const db = require("../models");
-const Availability = db.event;
+const Availability = db.availability;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-  console.log(req, res);
   if (!req.body.startTime) {
     console.log("bad request");
     res.status(400).send({
@@ -28,6 +27,7 @@ exports.create = (req, res) => {
       res.status(500).send({
         message: e.message || "Unknown error occured while creating availability",
       });
+      console.log(e.message);
     });
 };
 
