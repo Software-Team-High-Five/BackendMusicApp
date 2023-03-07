@@ -61,8 +61,8 @@ db.student.belongsTo(db.user, { as: 'instructor', foreignKey: 'instructorId' });
 // availability associations 
 db.event.hasMany(db.availability)
 db.availability.belongsTo(db.event);
-db.availability.belongsTo(db.user, {as: 'instructor', foreignKey: 'instructorId'});
-db.availability.belongsTo(db.user, {as: 'accompanist', foreignKey: 'accompanistId'});
+db.user.hasMany(db.availability);
+db.availability.belongsTo(db.user);
 
 //Junction Tables
 db.performance.belongsToMany(db.song, { through: 'performance_songs', as: 'songs' });
