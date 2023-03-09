@@ -59,8 +59,9 @@ db.user.hasMany(db.student, { as: 'instructor', foreignKey: 'instructorId' });
 db.student.belongsTo(db.user, { as: 'instructor', foreignKey: 'instructorId' });
 
 // availability associations 
-db.event.hasMany(db.availability)
+db.event.hasMany(db.availability);
 db.availability.belongsTo(db.event);
+db.user.hasMany(db.availability);
 db.availability.belongsTo(db.user);
 
 //Junction Tables

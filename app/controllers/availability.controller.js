@@ -79,3 +79,27 @@ exports.update = (req, res) => {
       });
     });
 };
+
+// gets all availability for event with instructor and accompanist 
+exports.getForEvent = (req, res) => {
+    const uid = req.params.uid;
+    const eid = req.params.eid;
+    if(!uid || !eid) {
+        console.log("bad request");
+        res.status(400).send({
+            message: "Content empty",
+        });
+        return;
+    }
+
+    Availability.findAll({
+        where: [{userId: {[Op.eq]: uid}}, {eventId: {[Op.eq]: eid}}]
+    })
+    .then(data => {
+        res.send(data);
+    })
+    .catch(e => {
+        console.log(e || 'unknown errer');
+        res.status(500).send({message: e || 'unknown error'});
+    })
+}

@@ -27,6 +27,15 @@ exports.create = (req, res) => {
     })
 }
 
+exports.getAccompanists = (req, res) => {
+  User.findAll({ include: [{model: db.role, as: 'roles', where: {role: {[Op.eq]: 'accompanist'}}}, {model: db.instrument, as: 'instruments'}] })
+  .then(data => res.send(data))
+  .catch(e => {
+    console.log(e || 'unknown error');
+    res.status(500).send({message: e || 'unknown error'})
+  })
+}
+
 exports.findAll = (req, res) => {
 
   var orderBy = ['id'];
