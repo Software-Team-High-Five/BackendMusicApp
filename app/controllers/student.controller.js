@@ -30,10 +30,8 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => {
   console.log('finding all');
-  // const title = req.query.title;
-  // var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
   var orderBy = ['id'];
-  Student.findAll({ /*where: condition,*/ order: orderBy })
+  Student.findAll({ order: orderBy })
     .then(data => {
       res.send(data);
     })
@@ -44,7 +42,7 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Student.findByPk(id, { include: { model: db.instrument, as: 'instruments' }})
+  Student.findByPk(id, { include: { model: db.user, include: { model: db.instrument, as: 'instruments' }}})
     .then(data => {
       if( data ){
         res.send(data);

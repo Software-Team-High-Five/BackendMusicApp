@@ -1,29 +1,29 @@
 const db = require('../models');
-const Student = db.student;
+const User = db.user;
 const Instrument = db.instrument;
 
-//Add an instrument to a student
-exports.addStudentInstrument = async (req, res) => {
-  const studentId = req.query.studentId;
+//Add an instrument to a user
+exports.addUserInstrument = async (req, res) => {
+  const userId = req.query.userId;
   const instrumentId = req.query.instrumentId;
-  if(!studentId || !instrumentId) {
+  if(!userId || !instrumentId) {
     res.status(400).send({
-      message: 'studentId and instrumentId are required!'
+      message: 'userId and instrumentId are required!'
     });
     return;
   }
   let error = false;
 
-  //Get the student
-  let student;
-  let studentPromise = Student.findByPk(studentId)
+  //Get the user
+  let user;
+  let userPromise = User.findByPk(userId)
     .then(data => {
       if (data != null)
-        student = data;
+        user = data;
       else if (!error) {
         error = true;
         res.status(404).send({
-          message: `Unable to locate student with id ${studentId}`
+          message: `Unable to locate user with id ${userId}`
         });
       }
     })
@@ -31,7 +31,7 @@ exports.addStudentInstrument = async (req, res) => {
       if (!error) {
         error = true;
         res.status(500).send({
-          message: e.message || `Unknown error occured while locating student with id ${studentId}`
+          message: e.message || `Unknown error occured while locating user with id ${userId}`
         });
       }
     });
@@ -59,45 +59,45 @@ exports.addStudentInstrument = async (req, res) => {
     });
 
   //Wait for data
-  await studentPromise;
+  await userPromise;
   await instrumentPromise;
   if (error)
     return;
   
-  //Add instrument to student
-  student.addInstrument(instrument)
+  //Add instrument to user
+  user.addInstrument(instrument)
     .then(data => {
       res.send(data);
     })
     .catch(e => {
       res.status(500).send({
-        message: e.message || `Unknown error occured while adding the instrument (${instrumentId}) to the student (${studentId})`
+        message: e.message || `Unknown error occured while adding the instrument (${instrumentId}) to the user (${user})`
       });
     });
 };
 
-//Remove an instrument from a student
-exports.removeStudentInstrument = async (req, res) => {
+//Remove an instrument from a user
+exports.removeUserInstrument = async (req, res) => {
   const instrumentId = req.query.instrumentId;
-  const studentId = req.query.studentId;
-  if(!instrumentId || !studentId) {
+  const userId = req.query.userId;
+  if(!instrumentId || !userId) {
     res.status(400).send({
-      message: 'studentId and instrumentId are required!'
+      message: 'userId and instrumentId are required!'
     });
     return;
   }
   let error = false;
 
-  //Get the student
-  let student;
-  let studentPromise = Student.findByPk(studentId)
+  //Get the user
+  let user;
+  let userPromise = User.findByPk(userId)
     .then(data => {
       if (data != null)
-        student = data;
+        user = data;
       else if (!error) {
         error = true;
         res.status(404).send({
-          message: `Unable to locate student with id ${studentId}`
+          message: `Unable to locate user with id ${userId}`
         });
       }
     })
@@ -105,7 +105,7 @@ exports.removeStudentInstrument = async (req, res) => {
       if (!error) {
         error = true;
         res.status(500).send({
-          message: e.message || `Unknown error occured while locating student with id ${studentId}`
+          message: e.message || `Unknown error occured while locating user with id ${userId}`
         });
       }
     });
@@ -133,24 +133,24 @@ exports.removeStudentInstrument = async (req, res) => {
     });
 
   //Wait for data
-  await studentPromise;
+  await userPromise;
   await instrumentPromise;
   if (error)
     return;
   
-  //Remove instrument from the student
-  student.removeInstrument(instrument)
+  //Remove instrument from the user
+  user.removeInstrument(instrument)
     .then(data => {
       if (data === 1)
         res.sendStatus(200);
       else
         res.status(400).send({
-          message: `Unable to remove the instrument ${instrumentId} from the student ${studentId} because the student does not play the instrument`
+          message: `Unable to remove the instrument ${instrumentId} from the user ${userId} because the user does not play the instrument`
         });
     })
     .catch(e => {
       res.status(500).send({
-        message: e.message || `Unknown error occured while removing the instrument (${instrumentId}) from the student (${studentId})`
+        message: e.message || `Unknown error occured while removing the instrument (${instrumentId}) from the user (${userId})`
       });
     });
 };
