@@ -1,12 +1,13 @@
-module.exports = app => {
-    const feedbacks = require("../controllers/feedback.controller.js")
-    var router = require("express").Router();
+module.exports = (app) => {
+  const feedbacks = require("../controllers/feedback.controller.js");
+  const { authenticate } = require("../authorization/authorization.js");
+  var router = require("express").Router();
 
-    router.post("/", feedbacks.create);
-    router.get("/", feedbacks.findAll);
-    router.get("/:id", feedbacks.findOne);
-    router.put("/:id", feedbacks.update);
-    router.delete("/:id", feedbacks.delete);
+  router.post("/", [authenticate], feedbacks.create);
+  router.get("/", [authenticate], feedbacks.findAll);
+  router.get("/:id", [authenticate], feedbacks.findOne);
+  router.put("/:id", [authenticate], feedbacks.update);
+  router.delete("/:id", [authenticate], feedbacks.delete);
 
-    app.use('/performance-t5/feedbacks', router);   
+  app.use("/performance-t5/feedbacks", router);
 };
