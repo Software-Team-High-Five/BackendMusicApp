@@ -5,12 +5,6 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    // role: {
-    //   //May have to remove because of Login
-    //   // type: Sequelize.STRING
-    //   type: Sequelize.ENUM("student", "faculty", "admin"),
-    //   allowNull: false,
-    // },
     fName: {
       type: Sequelize.STRING,
       allowNull: false,

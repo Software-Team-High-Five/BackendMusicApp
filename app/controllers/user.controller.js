@@ -13,7 +13,6 @@ exports.create = (req, res) => {
   }
   const user = {
     id: req.body.id,
-    role: req.body.role, // probably need to remove
     fName: req.body.fname,
     lName: req.body.lname,
     email: req.body.email,
@@ -23,45 +22,41 @@ exports.create = (req, res) => {
       res.send(data);
     })
     .catch((e) => {
-      res
-        .status(500)
-        .send({
-          message: e.message || "Unknown error occured during create user",
-        });
+      res.status(500).send({
+        message: e.message || "Unknown error occured during create user",
+      });
     });
 };
 
 exports.findAll = (req, res) => {
-  // const title = req.query.title;
-  // var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
   var orderBy = ["id"];
   User.findAll({
-    /*where: condition,*/ order: orderBy,
-    include: {
-      model: db.student,
-      include: { model: db.instrument, as: "instruments" },
-    },
+    order: orderBy,
+    include: [
+      { model: db.student },
+      { model: db.instrument, as: "instruments" },
+      { model: db.role, as: "roles" },
+    ],
   })
     .then((data) => {
       res.send(data);
     })
     .catch((e) => {
       console.log("catching error");
-      res
-        .status(500)
-        .send({
-          message: e.message || "unknown error while finding all users",
-        });
+      res.status(500).send({
+        message: e.message || "unknown error while finding all users",
+      });
     });
 };
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
   User.findByPk(id, {
-    include: {
-      model: db.student,
-      include: { model: db.instrument, as: "instruments" },
-    },
+    include: [
+      { model: db.student },
+      { model: db.instrument, as: "instruments" },
+      { model: db.role, as: "roles" },
+    ],
   })
     .then((data) => {
       if (data) {
