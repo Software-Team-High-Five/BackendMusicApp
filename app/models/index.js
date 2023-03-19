@@ -38,6 +38,7 @@ db.student.hasMany(db.performance);
 db.performance.belongsTo(db.student);
 db.user.hasMany(db.performance, { as: 'studentInstructor', foreignKey: 'instructorId' });
 db.performance.belongsTo(db.user, { as: 'studentInstructor', foreignKey: 'instructorId' });
+db.user.hasMany(db.performance, { as: 'accompanist', foreignKey: 'accompanistId' });
 db.performance.belongsTo(db.user, { as: 'accompanist', foreignKey: 'accompanistId' });
 
 db.instrument.hasMany(db.performance);
