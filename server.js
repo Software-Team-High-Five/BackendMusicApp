@@ -11,7 +11,6 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// deploy test #4
 // parse requests of content-type - application/json
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
@@ -35,22 +34,18 @@ app.get("/", (req, res) => {
 });
 
 // include the routes
-
-// require("./app/routes/course.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/student.routes")(app);
-
 require("./app/routes/performance.routes")(app);
 require("./app/routes/song.routes")(app);
-
 require("./app/routes/composer.routes")(app);
 require("./app/routes/event.routes")(app);
-
 require("./app/routes/performance_song.routes")(app);
-require("./app/routes/student_instrument.routes")(app);
-
+require("./app/routes/user_instrument.routes")(app);
 require("./app/routes/instrument.routes")(app);
 require("./app/routes/feedback.routes")(app);
+require("./app/routes/role.routes")(app);
+require("./app/routes/availability.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3025;

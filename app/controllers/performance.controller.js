@@ -4,8 +4,16 @@ const Performance = db.performance;
 const Op = db.Sequelize.Op;
 const util = require('../utils/performance.util');
 
+const associations = [
+    db.event
+    ,db.instrument
+    ,{ model: db.song, as: 'songs', include: db.composer }
+    ,{ model: db.feedback, include: {model: db.user, as: 'judge'} }
+    ,{ model: db.user, as: 'studentInstructor' }
+    ,{ model: db.user, as: 'accompanist' }
+];
+
 exports.create = (req, res) => {
-  // console.log(req, res);
   if(!req.body.startTime) {
     console.log('bad request');
     res.status(400).send({
@@ -36,10 +44,8 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => {
     console.log('finding all');
-    const title = req.query.title;
-    var condition = title ? { title: { [Op.like]: `%${title}%` }} : null;
     var orderBy = ['id'];
-    Performance.findAll({ where: condition, order: orderBy })
+    Performance.findAll({order: orderBy, include: associations })
       .then(data => {
         res.send(data);
       })
@@ -50,14 +56,7 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Performance.findByPk(id, {include: [
-      db.event
-      ,db.instrument
-      ,{ model: db.song, as: 'songs', include: db.composer }
-      ,{ model: db.feedback, include: {model: db.user, as: 'judge'} }
-      ,{ model: db.user, as: 'studentInstructor' }
-    ]}
-  )
+  Performance.findByPk(id, {include: associations})
     .then(data => {
       if( data ){
         res.send(data);

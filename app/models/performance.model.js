@@ -13,10 +13,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.TIME
       ,allowNull: false
     }
-    ,accompanist: {
-      type: Sequelize.STRING
-      ,allowNull: false
-    }
   });
   return User;
 }
