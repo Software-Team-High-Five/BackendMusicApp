@@ -4,7 +4,6 @@ const cors = require("cors");
 const history = require('connect-history-api-fallback');
 const app = express();
 
-app.use(history());
 
 var corsOptions = {
   origin: "http://localhost:8080",
@@ -16,6 +15,10 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 // -sync the database
+
+app.use(history({
+  htmlAcceptHeaders: ['text/html', 'application/xhtml+xml', 'application/json', 'application/x-www-form-urlencoded']
+}));
 
 const db = require("./app/models");
 
