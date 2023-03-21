@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // -sync the database
 
+// allow direct url access for production
 app.use(history({
   htmlAcceptHeaders: ['text/html', 'application/xhtml+xml', 'application/json', 'application/x-www-form-urlencoded']
 }));
