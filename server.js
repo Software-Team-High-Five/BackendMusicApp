@@ -1,7 +1,10 @@
 //require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const history = require('connect-history-api-fallback');
 const app = express();
+
+app.use(history());
 
 var corsOptions = {
   origin: "http://localhost:8080",
