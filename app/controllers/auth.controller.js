@@ -83,15 +83,25 @@ exports.login = async (req, res) => {
   // this lets us get the user id
   if (user.id === undefined) {
     console.log("need to get user's id");
-    console.log(user);
-    await User.create(user)
-      .then((data) => {
-        console.log("user was registered");
-        user = data.dataValues;
-        // res.send({ message: "User was registered successfully!" });
-      })
-      .catch((err) => {
-        res.status(500).send({ message: err.message });
+    let createData = { ...user };
+    createData.student = {
+      classification: "",
+      major: "",
+      semester: 0,
+      level: 0,
+      instructorId: null
+    };
+    let userObject = await User.create(createData, { include: { model: db.student }})
+      .catch(err => {
+        res.status(500).send({ message: err.message | "unable to create user data" });
+      });
+    let role = await db.role.findOne({ where: { role: 'student' } })
+      .catch(err => {
+        res.status(500).send({ message: err.message | "unable to find student role" });
+      });
+    userObject.addRole(role)
+      .catch(err => {
+        res.status(500).send({ message: err.message | "unable to assign student role to user" });
       });
   } else {
     console.log(user);
