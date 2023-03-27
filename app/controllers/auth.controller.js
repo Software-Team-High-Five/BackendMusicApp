@@ -78,6 +78,9 @@ exports.login = async (req, res) => {
           fName: firstName,
           lName: lastName,
           email: email,
+          student: null,
+          roles: [],
+          instruments: []
         };
       }
     })
@@ -104,10 +107,13 @@ exports.login = async (req, res) => {
       .catch(err => {
         res.status(500).send({ message: err.message | "unable to find student role" });
       });
-    userObject.addRole(role)
+    await userObject.addRole(role)
       .catch(err => {
         res.status(500).send({ message: err.message | "unable to assign student role to user" });
       });
+    user.id = userObject.dataValues.id;
+    user.student = userObject.student.dataValues;
+    user.roles = [ role.dataValues ];
   } else {
     console.log(user);
     // doing this to ensure that the user's name is the one listed with Google
