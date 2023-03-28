@@ -96,9 +96,7 @@ exports.instructorStudents = (req, res) => {
   Student.findAll(
     {
       include: { model: db.user, include: { model: db.instrument, as: 'instruments' } },
-    },
-    {
-      where: { instructorId: {[Op.eq]: id } }
+      where: { instructorId: id }
     })
     .then(data => res.send(data))
     .catch(e => res.status(500).send({ message: e.message || 'unknown error finding students'}));
