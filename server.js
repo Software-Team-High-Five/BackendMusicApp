@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+// const mailer = require('./app/utils/email.util');
 
 
 var corsOptions = {
@@ -50,3 +51,5 @@ const PORT = process.env.PORT || 3025;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+// mailer.testMail();
