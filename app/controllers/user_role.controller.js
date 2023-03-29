@@ -4,8 +4,8 @@ const Role = db.role;
 
 //Add a role to a user
 exports.addUserRole = async (req, res) => {
-  const userId = req.query.studentId;
-  const roleId = req.query.instrumentId;
+  const userId = req.query.userId;
+  const roleId = req.query.roleId;
   if(!roleId || !userId) {
     res.status(400).send({
       message: 'role and user ids are required!'
@@ -31,7 +31,7 @@ exports.addUserRole = async (req, res) => {
       if (!error) {
         error = true;
         res.status(500).send({
-          message: e.message || `Unknown error occured while locating user with id ${studentId}`
+          message: e.message || `Unknown error occured while locating user with id ${userId}`
         });
       }
     });

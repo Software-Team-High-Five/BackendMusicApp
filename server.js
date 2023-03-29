@@ -44,6 +44,7 @@ require("./app/routes/instrument.routes")(app);
 require("./app/routes/feedback.routes")(app);
 require("./app/routes/role.routes")(app);
 require("./app/routes/availability.routes")(app);
+require("./app/routes/user_role.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3025;
