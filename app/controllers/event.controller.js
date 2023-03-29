@@ -40,7 +40,6 @@ exports.findAll = (req, res) => {
     include: [
       { model: db.student, include: { model: db.user } },
       { model: db.song, as: "songs", include: db.composer },
-      db.instrument,
       { model: db.feedback, include: { model: db.user, as: "judge" } },
     ],
   },      
@@ -65,9 +64,8 @@ exports.findOne = (req, res) => {
       model: db.performance,
       where: condition,
       include: [
-        { model: db.student, include: { model: db.user } },
+        { model: db.student, include: { model: db.user, include: {model: db.instrument, as: 'instruments'} } },
         { model: db.song, as: "songs", include: db.composer },
-        db.instrument,
         { model: db.feedback, include: { model: db.user, as: "judge" } },
       ],
     },      

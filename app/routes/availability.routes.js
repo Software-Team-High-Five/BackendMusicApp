@@ -4,6 +4,7 @@ module.exports = (app) => {
   
     router.post("/", availabilities.create);
     router.get("/", availabilities.findAll);
+    router.get('/event/:uid/:eid', availabilities.getForEvent);
     router.get("/:id", availabilities.findOne);
     router.put("/:id", availabilities.update);
   
