@@ -1,13 +1,14 @@
-module.exports = app => {
-    const students = require("../controllers/student.controller.js")
-    var router = require("express").Router();
+module.exports = (app) => {
+  const students = require("../controllers/student.controller.js");
+  const { authenticate } = require("../authorization/authorization.js");
+  var router = require("express").Router();
 
-    router.post("/", students.create);
-    router.get("/", students.findAll);
-    router.get("/instructor/:id", students.instructorStudents)
-    router.get("/:id", students.findOne);
-    router.put("/:id", students.update);
-    router.delete("/:id", students.delete);
+  router.post("/", [authenticate], students.create);
+  router.get("/", [authenticate], students.findAll);
+  router.get("/instructor/:id", [authenticate], students.instructorStudents);
+  router.get("/:id", [authenticate], students.findOne);
+  router.put("/:id", [authenticate], students.update);
+  router.delete("/:id", [authenticate], students.delete);
 
-    app.use('/performance-t5/students', router);   
+  app.use("/performance-t5/students", router);
 };
