@@ -8,8 +8,8 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     max: dbConfig.pool.max,
     min: dbConfig.pool.min,
     acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle
-  }
+    idle: dbConfig.pool.idle,
+  },
 });
 const db = {};
 db.Sequelize = Sequelize;
@@ -26,28 +26,40 @@ db.song = require("./song.model.js")(sequelize, Sequelize);
 db.instrument = require("./instrument.model.js")(sequelize, Sequelize);
 db.role = require("./role.model.js")(sequelize, Sequelize);
 db.availability = require("./availability.model.js")(sequelize, Sequelize);
-
+db.session = require("./session.model.js")(sequelize, Sequelize);
 
 //Foriegn Keys
-db.user.hasOne(db.student, { foreignKey: 'id' });
-db.student.belongsTo(db.user, { foreignKey: 'id' });
+db.user.hasOne(db.student, { foreignKey: "id" });
+db.student.belongsTo(db.user, { foreignKey: "id" });
 
 db.event.hasMany(db.performance);
 db.performance.belongsTo(db.event);
 db.student.hasMany(db.performance);
 db.performance.belongsTo(db.student);
-db.user.hasMany(db.performance, { as: 'studentInstructor', foreignKey: 'instructorId' });
-db.performance.belongsTo(db.user, { as: 'studentInstructor', foreignKey: 'instructorId' });
-db.user.hasMany(db.performance, { as: 'accompanist', foreignKey: 'accompanistId' });
-db.performance.belongsTo(db.user, { as: 'accompanist', foreignKey: 'accompanistId' });
+db.user.hasMany(db.performance, {
+  as: "studentInstructor",
+  foreignKey: "instructorId",
+});
+db.performance.belongsTo(db.user, {
+  as: "studentInstructor",
+  foreignKey: "instructorId",
+});
+db.user.hasMany(db.performance, {
+  as: "accompanist",
+  foreignKey: "accompanistId",
+});
+db.performance.belongsTo(db.user, {
+  as: "accompanist",
+  foreignKey: "accompanistId",
+});
 
 db.instrument.hasMany(db.performance);
 db.performance.belongsTo(db.instrument);
 
 db.performance.hasMany(db.feedback);
 db.feedback.belongsTo(db.performance);
-db.user.hasMany(db.feedback, { as: 'judge', foreignKey: 'judgeId' });
-db.feedback.belongsTo(db.user, { as: 'judge', foreignKey: 'judgeId' });
+db.user.hasMany(db.feedback, { as: "judge", foreignKey: "judgeId" });
+db.feedback.belongsTo(db.user, { as: "judge", foreignKey: "judgeId" });
 
 db.student.hasMany(db.song);
 db.song.belongsTo(db.student);
@@ -56,23 +68,46 @@ db.song.belongsTo(db.instrument);
 db.composer.hasMany(db.song);
 db.song.belongsTo(db.composer);
 
-db.user.hasMany(db.student, { as: 'instructor', foreignKey: 'instructorId' });
-db.student.belongsTo(db.user, { as: 'instructor', foreignKey: 'instructorId' });
+db.user.hasMany(db.student, { as: "instructor", foreignKey: "instructorId" });
+db.student.belongsTo(db.user, { as: "instructor", foreignKey: "instructorId" });
 
-// availability associations 
+db.user.hasMany(
+  db.session,
+  { as: "session" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.session.belongsTo(
+  db.user,
+  { as: "user" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+
+// availability associations
 db.event.hasMany(db.availability);
 db.availability.belongsTo(db.event);
 db.user.hasMany(db.availability);
 db.availability.belongsTo(db.user);
 
 //Junction Tables
-db.performance.belongsToMany(db.song, { through: 'performance_songs', as: 'songs' });
-db.song.belongsToMany(db.performance, { through: 'performance_songs', as: 'performaces' });
+db.performance.belongsToMany(db.song, {
+  through: "performance_songs",
+  as: "songs",
+});
+db.song.belongsToMany(db.performance, {
+  through: "performance_songs",
+  as: "performaces",
+});
 
-db.user.belongsToMany(db.instrument, { through: 'user_instruments', as: 'instruments' });
-db.instrument.belongsToMany(db.user, { through: 'user_instruments', as: 'users' });
+db.user.belongsToMany(db.instrument, {
+  through: "user_instruments",
+  as: "instruments",
+});
+db.instrument.belongsToMany(db.user, {
+  through: "user_instruments",
+  as: "users",
+});
 
-db.user.belongsToMany(db.role, { through: 'user_roles', as: 'roles' });
-db.role.belongsToMany(db.user, { through: 'user_roles', as: 'users' });
+db.user.belongsToMany(db.role, { through: "user_roles", as: "roles" });
+db.role.belongsToMany(db.user, { through: "user_roles", as: "users" });
 
 module.exports = db;
