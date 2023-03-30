@@ -2,7 +2,8 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-// const mailer = require('./app/utils/email.util');
+const mailer = require('./app/utils/email.util');
+// const users = require("./app/utils/user.util");
 
 
 var corsOptions = {
@@ -22,6 +23,8 @@ db.sequelize
   .sync()
   .then(() => {
     console.log("Synced db.");
+    mailer.eventsEmail();
+
   })
   .catch((err) => {
     console.log("Failed to sync db: " + err.message);
@@ -52,4 +55,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-// mailer.testMail();
+
+//mailer.feedbackEmail('jackson.tate@eagles.oc.edu', {id: 500, date: '2023/01/01'});
+// mailer.testEmail();
