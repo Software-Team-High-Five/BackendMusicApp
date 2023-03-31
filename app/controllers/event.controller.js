@@ -136,3 +136,37 @@ exports.findUpcomingEvents = (req, res) => {
       });
     });
 };
+
+exports.findInstrumental = (req, res) => {
+  var orderBy = ["date"];
+  Event.findAll({
+    order: orderBy,  
+    include: [{
+      model: db.performance, include: [
+        { model: db.student, include: { model: db.user } },
+        { model: db.song, as: "songs", include: db.composer },
+        { model: db.feedback, include: { model: db.user, as: "judge" } },
+        ],
+      },      
+      db.availability
+    ],
+    where: {performanceType: {[Op.ne]: 'vocal'}}
+  })
+}
+
+exports.findVocal = (req, res) => {
+  var orderBy = ["date"];
+  Event.findAll({
+    order: orderBy,  
+    include: [{
+      model: db.performance, include: [
+        { model: db.student, include: { model: db.user } },
+        { model: db.song, as: "songs", include: db.composer },
+        { model: db.feedback, include: { model: db.user, as: "judge" } },
+        ],
+      },      
+      db.availability
+    ],
+    where: {performanceType: {[Op.ne]: 'instrumental'}}
+  })
+}

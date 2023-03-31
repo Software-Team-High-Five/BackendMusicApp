@@ -6,6 +6,8 @@ module.exports = (app) => {
   router.post("/", [authenticate], events.create);
   router.get("/", [authenticate], events.findAll);
   router.get("/upcoming", [authenticate], events.findUpcomingEvents);
+  router.get("/vocal", [authenticate], events.findVocal);
+  router.get("/instrumental", [authenticate], events.findInstrumental);
   router.get("/:id", [authenticate], events.findOne);
   router.put("/:id", [authenticate], events.update);
   router.delete("/:id", [authenticate], events.delete);

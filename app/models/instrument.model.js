@@ -9,6 +9,11 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
         ,allowNull: false
       }
+      ,isInstrument: {
+        type: Sequelize.BOOLEAN
+        ,allowNull: false
+        ,defaultValue: 1
+      }
     });
     return User;
   }
