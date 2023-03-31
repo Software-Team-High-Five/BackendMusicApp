@@ -117,17 +117,12 @@ exports.eventsEmail = async () => {
             });
         })
     const emailAddrs = await users.getFacultyEmails();
-    //get events
-    Promise.all([emailAddrs])
-        .then(() => {
-            console.log(emailAddrs);
-        })
+    console.log(emailAddrs);
 
     // get events to email about
-    // get all faculty emails
 
-    // cron.schedule('0 8 * * *', function() {
-    //     console.log('this is where the schedled emails will be sent from')
-    // })
+    cron.schedule('0 8 * * *', function() {
+        console.log(emailAddrs);
+    })
 }
 

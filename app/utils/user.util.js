@@ -4,7 +4,7 @@ const User = db.user;
 const Op = db.Sequelize.Op;
 
 exports.getFacultyEmails = async () => {
-    await User.findAll({
+    return await User.findAll({
         include: [{model: db.role, as: 'roles', where: {role: {[Op.eq]: 'faculty'}}}]
         ,attributes: ['email']
     })
@@ -12,7 +12,7 @@ exports.getFacultyEmails = async () => {
         const d = data.map(d => d.dataValues.email);
         return d;
     })
-    .catch(  e => {
+    .catch(e => {
         console.log(e);
     })
 }
