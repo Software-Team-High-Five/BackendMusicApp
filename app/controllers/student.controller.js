@@ -94,12 +94,10 @@ exports.delete = (req, res) => {
 exports.instructorStudents = (req, res) => {
   const id = req.params.id;
   Student.findAll(
-    {include: [
-      {model: db.user}
-    ]},
-    {where: {
-      instructorId: {[Op.eq]: id }
-    }})
+    {
+      include: { model: db.user, include: { model: db.instrument, as: 'instruments' } },
+      where: { instructorId: id }
+    })
     .then(data => res.send(data))
     .catch(e => res.status(500).send({ message: e.message || 'unknown error finding students'}));
 }   

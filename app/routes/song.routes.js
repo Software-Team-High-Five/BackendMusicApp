@@ -1,12 +1,13 @@
-module.exports = app => {
-    const songs = require("../controllers/song.controller.js")
-    var router = require("express").Router();
+module.exports = (app) => {
+  const songs = require("../controllers/song.controller.js");
+  const { authenticate } = require("../authorization/authorization.js");
+  var router = require("express").Router();
 
-    router.post("/", songs.create);
-    router.get("/", songs.findAll);
-    router.get("/:id", songs.findOne);
-    router.put("/:id", songs.update);
-    router.delete("/:id", songs.delete);
+  router.post("/", [authenticate], songs.create);
+  router.get("/", [authenticate], songs.findAll);
+  router.get("/:id", [authenticate], songs.findOne);
+  router.put("/:id", [authenticate], songs.update);
+  router.delete("/:id", [authenticate], songs.delete);
 
-    app.use('/performance-t5/songs', router);   
+  app.use("/performance-t5/songs", router);
 };

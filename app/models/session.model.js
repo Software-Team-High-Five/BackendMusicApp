@@ -1,22 +1,23 @@
 module.exports = (sequelize, Sequelize) => {
-  const User = sequelize.define("user", {
+  const Session = sequelize.define("session", {
     id: {
       type: Sequelize.INTEGER,
-      primaryKey: true,
       autoIncrement: true,
+      primaryKey: true,
     },
-    fName: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    lName: {
-      type: Sequelize.STRING,
+    token: {
+      type: Sequelize.STRING(3000),
       allowNull: false,
     },
     email: {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    expirationDate: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
   });
-  return User;
+
+  return Session;
 };

@@ -1,7 +1,6 @@
-//require("dotenv").config();
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const history = require('connect-history-api-fallback');
 const app = express();
 
 
@@ -15,11 +14,6 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 // -sync the database
-
-// allow direct url access for production
-app.use(history({
-  htmlAcceptHeaders: ['text/html', 'application/xhtml+xml', 'application/json', 'application/x-www-form-urlencoded']
-}));
 
 const db = require("./app/models");
 
@@ -50,6 +44,8 @@ require("./app/routes/instrument.routes")(app);
 require("./app/routes/feedback.routes")(app);
 require("./app/routes/role.routes")(app);
 require("./app/routes/availability.routes")(app);
+require("./app/routes/auth.routes")(app);
+require("./app/routes/user_role.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3025;
