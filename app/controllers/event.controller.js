@@ -38,9 +38,10 @@ exports.findAll = (req, res) => {
   Event.findAll({order: orderBy,  include: [{
     model: db.performance,
     include: [
+      { model: db.user, as: 'accompanist' },
       { model: db.student, include: { model: db.user } },
       { model: db.song, as: "songs", include: db.composer },
-      { model: db.feedback, include: { model: db.user, as: "judge" } },
+      { model: db.feedback, include: { model: db.user, as: "judge" }}
     ],
   },      
   db.availability
@@ -143,6 +144,7 @@ exports.findInstrumental = (req, res) => {
     order: orderBy,  
     include: [{
       model: db.performance, include: [
+        { model: db.instrument, as: 'instruments' },
         { model: db.student, include: { model: db.user } },
         { model: db.song, as: "songs", include: db.composer },
         { model: db.feedback, include: { model: db.user, as: "judge" } },

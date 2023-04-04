@@ -29,7 +29,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN
       ,allowNull: false
     }
-    ,performanceTYpe: {
+    ,performanceType: {
       type: Sequelize.ENUM('all', 'vocal', 'instrumental')
       ,allowNull: false
       ,defaultValue: 'all'
