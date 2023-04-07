@@ -27,6 +27,7 @@ db.instrument = require("./instrument.model.js")(sequelize, Sequelize);
 db.role = require("./role.model.js")(sequelize, Sequelize);
 db.availability = require("./availability.model.js")(sequelize, Sequelize);
 db.session = require("./session.model.js")(sequelize, Sequelize);
+db.user_instruments = require("./user_instruments.model.js")(sequelize, Sequelize);
 
 //Foriegn Keys
 db.user.hasOne(db.student, { foreignKey: "id" });
@@ -68,8 +69,8 @@ db.song.belongsTo(db.instrument);
 db.composer.hasMany(db.song);
 db.song.belongsTo(db.composer);
 
-db.user.hasMany(db.student, { as: "instructor", foreignKey: "instructorId" });
-db.student.belongsTo(db.user, { as: "instructor", foreignKey: "instructorId" });
+// db.user.hasMany(db.student, { as: "instructor", foreignKey: "instructorId" });
+// db.student.belongsTo(db.user, { as: "instructor", foreignKey: "instructorId" });
 
 db.user.hasMany(
   db.session,
@@ -98,14 +99,26 @@ db.song.belongsToMany(db.performance, {
   as: "performaces",
 });
 
-db.user.belongsToMany(db.instrument, {
-  through: "user_instruments",
-  as: "instruments",
-});
-db.instrument.belongsToMany(db.user, {
-  through: "user_instruments",
-  as: "users",
-});
+// // user_instruments
+// // this is what works, do not delete
+// db.user.belongsToMany(db.instrument, {
+//   through: "user_instruments",
+//   as: "instruments",
+// });
+
+// db.instrument.belongsToMany(db.user, {
+//   through: "user_instruments",
+//   as: "users",
+// });
+
+// // new content
+
+// db.user.belongsToMany(db.user, {
+//   through: 'user_instruments'
+//   ,as: 'instructor'
+//   ,foreignKey: 'instructorId'
+//   ,otherKey: 'userId'
+// });
 
 db.user.belongsToMany(db.role, { through: "user_roles", as: "roles" });
 db.role.belongsToMany(db.user, { through: "user_roles", as: "users" });
