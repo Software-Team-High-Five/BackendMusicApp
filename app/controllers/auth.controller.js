@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
     },
     include: [
       { model: db.student },
-      { model: db.instrument, as: "instruments" },
+      { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] },
       { model: db.role, as: "roles" },
     ],
   })
