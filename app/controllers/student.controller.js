@@ -102,3 +102,7 @@ exports.instructorStudents = (req, res) => {
         .then(data => res.send(data))
         .catch(e => res.status(500).send({ message: e.message || 'unknown error finding students'}));
 }   
+
+exports.getInstructorsForStudent = (req, res) => {
+
+}
