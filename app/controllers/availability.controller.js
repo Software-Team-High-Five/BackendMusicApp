@@ -94,7 +94,6 @@ exports.getForEvent = (req, res) => {
 
     Availability.findAll({
         where: [{userId: {[Op.eq]: uid}}, {eventId: {[Op.eq]: eid}}]
-        // ,include: {model: db.user, include: {model: db.role, as: 'roles' }}
     })
     .then(data => {
         res.send(data);
