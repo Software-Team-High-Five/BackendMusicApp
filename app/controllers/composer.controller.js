@@ -20,6 +20,8 @@ exports.create = (req, res) => {
     lName: req.body.lName,
     bDate: req.body.bDate,
     dDate: req.body.dDate,
+    isApproved: req.body.isApproved
+
   };
   Composer.create(composer)
     .then((data) => {
