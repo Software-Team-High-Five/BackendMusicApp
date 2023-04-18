@@ -25,6 +25,11 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATEONLY
       ,allowNull: true
     }
+    ,isApproved: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defauleValue: 0
+    }
   });
   return User;
 }
