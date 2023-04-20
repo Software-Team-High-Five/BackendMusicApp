@@ -39,7 +39,7 @@ exports.findAll = (req, res) => {
     model: db.performance,
     include: [
       { model: db.user, as: 'accompanist' },
-      { model: db.student, include: { model: db.user } },
+      { model: db.student, include: { model: db.user, include: { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] } } },
       { model: db.song, as: "songs", include: db.composer },
       { model: db.feedback, include: { model: db.user, as: "judge" }}
     ],
@@ -65,7 +65,10 @@ exports.findOne = (req, res) => {
       model: db.performance,
       where: condition,
       include: [
-        { model: db.student, include: { model: db.user, include: {model: db.instrument, as: 'instruments'} } },
+        { model: db.student, include: { model: db.user 
+          ,include: { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] },
+
+        } },
         { model: db.song, as: "songs", include: db.composer },
         { model: db.feedback, include: { model: db.user, as: "judge" } },
       ],
@@ -144,8 +147,7 @@ exports.findInstrumental = (req, res) => {
     order: orderBy,  
     include: [{
       model: db.performance, include: [
-        { model: db.instrument, as: 'instruments' },
-        { model: db.student, include: { model: db.user } },
+        { model: db.student, include: { model: db.user, include: { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] } } },
         { model: db.song, as: "songs", include: db.composer },
         { model: db.feedback, include: { model: db.user, as: "judge" } },
         ],
@@ -162,7 +164,7 @@ exports.findVocal = (req, res) => {
     order: orderBy,  
     include: [{
       model: db.performance, include: [
-        { model: db.student, include: { model: db.user } },
+        { model: db.student, include: { model: db.user, include: { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] } } },
         { model: db.song, as: "songs", include: db.composer },
         { model: db.feedback, include: { model: db.user, as: "judge" } },
         ],

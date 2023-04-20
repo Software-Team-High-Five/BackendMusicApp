@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
     },
     include: [
       { model: db.student },
-      { model: db.instrument, as: "instruments" },
+      { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] },
       { model: db.role, as: "roles" },
     ],
   })
@@ -169,19 +169,8 @@ exports.login = async (req, res) => {
           //reset session to be null since we need to make another one
           session = {};
         } else {
-          // if the session is still valid, then send info to the front end
-          // let userInfo = {
-          //   email: user.email,
-          //   fName: user.fName,
-          //   lName: user.lName,
-          //   userId: user.id,
-          //   token: session.token,
-          //   // refresh_token: user.refresh_token,
-          //   // expiration_date: user.expiration_date
-          // };
           user.token = session.token;
           console.log("found a session, don't need to make another one");
-          // console.log(userInfo);
           res.send(user);
         }
       }
@@ -212,17 +201,7 @@ exports.login = async (req, res) => {
 
     await Session.create(session)
       .then(() => {
-        // let userInfo = {
-        //   email: user.email,
-        //   fName: user.fName,
-        //   lName: user.lName,
-        //   userId: user.id,
-        //   token: token,
-        //   // refresh_token: user.refresh_token,
-        //   // expiration_date: user.expiration_date
-        // };
         user.token = token;
-        // console.log(userInfo);
         res.send(user);
       })
       .catch((err) => {
