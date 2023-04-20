@@ -31,7 +31,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   console.log('finding all');
   var orderBy = ['id'];
-  Student.findAll({ order: orderBy })
+  Student.findAll({ order: orderBy, include: {model: db.user, include: { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] }} })
     .then(data => {
       res.send(data);
     })
@@ -42,7 +42,8 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Student.findByPk(id, { include: { model: db.user, include: { model: db.instrument, as: 'instruments' }}})
+  Student.findByPk(id, { include: 
+    { model: db.user, include: { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] }}})
     .then(data => {
       if( data ){
         res.send(data);
@@ -92,12 +93,16 @@ exports.delete = (req, res) => {
 }
 
 exports.instructorStudents = (req, res) => {
-  const id = req.params.id;
-  Student.findAll(
-    {
-      include: { model: db.user, include: { model: db.instrument, as: 'instruments' } },
-      where: { instructorId: id }
-    })
-    .then(data => res.send(data))
-    .catch(e => res.status(500).send({ message: e.message || 'unknown error finding students'}));
+    const id = req.params.id;
+    Student.findAll(
+        {
+            include: { model: db.user, include: { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] }},
+            where: { '$user.user_instruments.instructorId$': id }
+        })
+        .then(data => res.send(data))
+        .catch(e => res.status(500).send({ message: e.message || 'unknown error finding students'}));
 }   
+
+exports.getInstructorsForStudent = (req, res) => {
+
+}

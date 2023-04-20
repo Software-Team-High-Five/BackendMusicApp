@@ -27,6 +27,7 @@ db.instrument = require("./instrument.model.js")(sequelize, Sequelize);
 db.role = require("./role.model.js")(sequelize, Sequelize);
 db.availability = require("./availability.model.js")(sequelize, Sequelize);
 db.session = require("./session.model.js")(sequelize, Sequelize);
+db.user_instrument = require("./user_instruments.model.js")(sequelize, Sequelize);
 
 //Foriegn Keys
 db.user.hasOne(db.student, { foreignKey: "id" });
@@ -68,9 +69,6 @@ db.song.belongsTo(db.instrument);
 db.composer.hasMany(db.song);
 db.song.belongsTo(db.composer);
 
-db.user.hasMany(db.student, { as: "instructor", foreignKey: "instructorId" });
-db.student.belongsTo(db.user, { as: "instructor", foreignKey: "instructorId" });
-
 db.user.hasMany(
   db.session,
   { as: "session" },
@@ -88,6 +86,13 @@ db.availability.belongsTo(db.event);
 db.user.hasMany(db.availability);
 db.availability.belongsTo(db.user);
 
+// user_instruments
+db.user.hasMany(db.user_instrument);
+db.user_instrument.belongsTo(db.user);
+db.instrument.hasMany(db.user_instrument);
+db.user_instrument.belongsTo(db.instrument);
+db.user_instrument.belongsTo(db.user, {as: 'instructor'});
+
 //Junction Tables
 db.performance.belongsToMany(db.song, {
   through: "performance_songs",
@@ -96,15 +101,6 @@ db.performance.belongsToMany(db.song, {
 db.song.belongsToMany(db.performance, {
   through: "performance_songs",
   as: "performaces",
-});
-
-db.user.belongsToMany(db.instrument, {
-  through: "user_instruments",
-  as: "instruments",
-});
-db.instrument.belongsToMany(db.user, {
-  through: "user_instruments",
-  as: "users",
 });
 
 db.user.belongsToMany(db.role, { through: "user_roles", as: "roles" });

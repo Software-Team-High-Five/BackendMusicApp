@@ -29,7 +29,7 @@ exports.create = (req, res) => {
 };
 
 exports.getAccompanists = (req, res) => {
-  User.findAll({ include: [{model: db.role, as: 'roles', where: {role: {[Op.eq]: 'accompanist'}}}, {model: db.instrument, as: 'instruments'}] })
+  User.findAll({ include: [{model: db.role, as: 'roles', where: {role: {[Op.eq]: 'accompanist'}}}, /**{model: db.instrument, as: 'instruments'}*/] })
   .then(data => res.send(data))
   .catch(e => {
     console.log(e || 'unknown error');
@@ -43,7 +43,7 @@ exports.findAll = (req, res) => {
     order: orderBy,
     include: [
       { model: db.student },
-      { model: db.instrument, as: "instruments" },
+      { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] },
       { model: db.role, as: "roles" },
     ],
   })
@@ -51,7 +51,7 @@ exports.findAll = (req, res) => {
       res.send(data);
     })
     .catch((e) => {
-      console.log("catching error");
+      console.log(e);
       res.status(500).send({
         message: e.message || "unknown error while finding all users",
       });
@@ -63,7 +63,7 @@ exports.findOne = (req, res) => {
   User.findByPk(id, {
     include: [
       { model: db.student },
-      { model: db.instrument, as: "instruments" },
+      { model: db.user_instrument, include: [{model: db.instrument}, {model: db.user, as: 'instructor'}] },
       { model: db.role, as: "roles" },
     ],
   })
