@@ -82,19 +82,22 @@ exports.update = (req, res) => {
 
 // gets all availability for event with instructor and accompanist 
 exports.getForEvent = (req, res) => {
-    const uid = req.params.uid;
     const eid = req.params.eid;
-    if(!uid || !eid) {
+    const uid = req.query.userId;
+    if(!eid) {
         console.log("bad request");
         res.status(400).send({
             message: "Content empty",
         });
         return;
     }
+    let condition = [{eventId: {[Op.eq]: eid}}];
+    if (uid) condition.push({userId: {[Op.eq]: uid}});
 
     Availability.findAll({
-        where: [{userId: {[Op.eq]: uid}}, {eventId: {[Op.eq]: eid}}]
-        // ,include: {model: db.user, include: {model: db.role, as: 'roles' }}
+        where: condition,
+        include: { model: db.user },
+        order: [['startTime', 'ASC']]
     })
     .then(data => {
         res.send(data);
@@ -102,5 +105,5 @@ exports.getForEvent = (req, res) => {
     .catch(e => {
         console.log(e || 'unknown errer');
         res.status(500).send({message: e || 'unknown error'});
-    })
+    });
 }
