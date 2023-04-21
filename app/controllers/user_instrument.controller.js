@@ -225,7 +225,7 @@ exports.delete = (req, res) => {
     USER_INSTRUMENT.destroy({ where: [{userId: uid}, {instrumentId: iid}] })
         .then(num => {
             if(num === 1) {
-                res.status(400).send({message: 'association deleted successfully'})
+                res.send({message: 'association deleted successfully'})
             } else {
                 res.status(400).send({ message: `unable to delete association`})
             }
